@@ -14,7 +14,7 @@ export const StyledContainer = styled.div`
       `linear-gradient(to bottom right, ${theme.gradientStart}, ${theme.gradientMid}, ${theme.gradientEnd})`};
     display: flex;
     border-radius: ${({ showForecast }) =>
-      showForecast ? '5px 5px 0 0' : '5px'};
+      showForecast ? '5px 5px 0 0' : '12px'};
   }
 
   .rw-container-header {
