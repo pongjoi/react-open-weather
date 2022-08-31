@@ -31,7 +31,7 @@ const ReactWeather = ({
     const labels = getLabelsByLanguage(lang);
 
     return (
-        <div style={{width:'1340px'}}>
+       
           <StyledContainer className="rw-container" theme={theme} s>
             <div className="rw-container-main">
               <div className="rw-container-left">
@@ -88,7 +88,7 @@ const ReactWeather = ({
                 />
             )}
           </StyledContainer>
-        </div>
+    
 
     );
   }
