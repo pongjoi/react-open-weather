@@ -5,6 +5,7 @@ import Forecast from './Forecast';
 import WeatherIcon from './WeatherIcon';
 import { StyledContainer } from './ReactWeather.styles';
 import defaultTheme from '../defaultTheme';
+import {getLabelsByLanguage} from "../utils";
 
 const ReactWeather = ({
   unitsLabels,
@@ -24,36 +25,71 @@ const ReactWeather = ({
     if (errorMessage) {
       return <div>{errorMessage}</div>;
     }
+    const hasRange =
+        current.temperature.min !== undefined &&
+        current.temperature.max !== undefined;
+    const labels = getLabelsByLanguage(lang);
+
     return (
-      <StyledContainer className="rw-container" theme={theme}>
-        <div className="rw-container-main">
-          <div className="rw-container-left">
-            <h2 className="rw-container-header">{locationLabel}</h2>
-            <Today
-              current={current}
-              unitsLabels={unitsLabels}
-              lang={lang}
-              theme={theme}
-            />
-          </div>
-          <div className="rw-container-right">
-            <WeatherIcon
-              path={current.icon}
-              size={120}
-              color={theme.todayIconColor}
-              title={current.description}
-            />
-          </div>
+        <div style={{width:'1340px'}}>
+          <StyledContainer className="rw-container" theme={theme} s>
+            <div className="rw-container-main">
+              <div className="rw-container-left">
+                <div style={{display: 'flex', flexDirection: 'row',justifyContent: 'space-evenly',alignItems: 'flex-end'}}>
+                  <div>
+                    <h2 className="rw-container-header">{locationLabel}</h2>
+                    <div className="rw-today-date">{current.date}</div>
+                  </div>
+                  <div className="rw-today-hr"/>
+
+                  <div>
+                    <div className="rw-today-current">
+                      {current.temperature.current} {unitsLabels.temperature}
+                    </div>
+                    {hasRange && (
+                        <div className="rw-today-range">
+                          {current.temperature.max} / {current.temperature.min}{' '}
+                          {unitsLabels.temperature}
+                        </div>
+                    )}
+                  </div>
+
+                  <div className="rw-today-hr"/>
+
+                  <div className="rw-today-info">
+                    <div>
+                      {labels.wind}: <b>{current.wind}</b> {unitsLabels.windSpeed}
+                    </div>
+                    <div>
+                      {labels.humidity}: <b>{current.humidity}</b> %
+                    </div>
+                    <div className="rw-today-desc">{current.description}</div>
+                  </div>
+
+                </div>
+
+
+              </div>
+              <div className="rw-container-right">
+                <WeatherIcon
+                    path={current.icon}
+                    size={120}
+                    color={theme.todayIconColor}
+                    title={current.description}
+                />
+              </div>
+            </div>
+            {showForecast && (
+                <Forecast
+                    unitsLabels={unitsLabels}
+                    forecast={forecast}
+                    lang={lang}
+                    theme={theme}
+                />
+            )}
+          </StyledContainer>
         </div>
-        {showForecast && (
-          <Forecast
-            unitsLabels={unitsLabels}
-            forecast={forecast}
-            lang={lang}
-            theme={theme}
-          />
-        )}
-      </StyledContainer>
+
     );
   }
   return null;
